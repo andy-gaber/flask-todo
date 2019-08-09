@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+        <!-- if/else current user show username, else show just Hello -->
+        {% if current_user.is_anonymous %}
+        <h1>Hello, Welcome To To-Do List!</h1>
+
+        <!-- implement links on 'register' and 'log in' -->
+        <h3>To get started, you can (create an account) or (log in)</h3>
+        {% else %}
+
+        <form action="" method="post">
+            {{ form.hidden_tag() }}
+            <p>
+                {{ form.task.label }}<br>
+                {{ form.task(cols=32, rows=4) }}<br>
+                {% for error in form.task.errors %}
+                <span style="color: red;">[{{ error }}]</span>
+                {% endfor %}
+            </p>
+            <p>{{ form.submit() }}</p>
+        </form>
+
+
+        <!-- If viewing as descending, show dead link to Newest and live link to Oldest -->
+        <!-- Else if viewing as ascending, show dead link to Oldest and live link to Newest -->
+        <b>
+        Sort By:
+        {% if current_user.list_as_descending %}
+            Newest
+            <a href="{{ url_for('oldest') }}">Oldest</a>
+        {% else %}
+            <a href="{{ url_for('newest') }}">Newest</a>
+            Oldest
+        {% endif %}
+        </b>
+
+
+
+
+        <hr>
+
+        {% for task in tasks %}
+        <p>
+            <a href="{{ url_for('delete_task', task_id=task.id) }}">Complete</a>
+            <br> ID: {{ task.id}}
+            <br> BODY: {{ task.body }}
+            <br> TIME: {{ task.timestamp }}
+        </p>
+        {% endfor %}
+
+        {% endif %}
+
+{% endblock content %}
