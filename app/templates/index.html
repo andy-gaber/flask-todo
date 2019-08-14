@@ -46,6 +46,7 @@
             <br> ID: {{ task.id}}
             <br> BODY: {{ task.body }}
             <br> TIME: {{ task.timestamp }}
+            <br> <a href="{{ url_for('due_date') }}">Set Due Date</a>
         </p>
         {% endfor %}
 

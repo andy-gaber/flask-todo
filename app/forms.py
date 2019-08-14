@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, TextAreaField, DateField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 from app.models import User
 
@@ -35,3 +35,6 @@ class TaskForm(FlaskForm):
     task = TextAreaField('Add Task', validators=[Length(max=140)])
     submit = SubmitField('Submit')
 
+class DueDateForm(FlaskForm):
+    due_date = DateField('Enter Due Date: MM/DD/YYYY', format='%m/%d/%Y')
+    submit = SubmitField('Submit')

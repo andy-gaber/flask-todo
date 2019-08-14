@@ -1,6 +1,6 @@
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
-from app.forms import LoginForm, RegistrationForm, TaskForm
+from app.forms import LoginForm, RegistrationForm, TaskForm, DueDateForm
 from flask_login import current_user, login_user, logout_user
 from app.models import User, Task
 '''
@@ -29,7 +29,7 @@ def index():
         return redirect(url_for('index'))
 
     user = User.query.filter_by(id=current_user.id).first()
-    if user.list_as_descending == True:
+    if user.list_as_descending:
         tasks = current_user.tasks_descending().all()
     else:
         tasks = current_user.tasks_ascending().all()
@@ -119,3 +119,17 @@ def oldest():
     return redirect(url_for('index'))
 
 
+@app.route('/due_date', methods=['GET', 'POST'])
+def due_date():
+    if current_user.is_anonymous:
+        return render_template('index.html', title='Home')
+    form = DueDateForm()
+    if form.validate_on_submit():
+        # user = User(username=form.username.data, email=form.email.data)
+        # user.set_password(form.password.data)
+        # db.session.add(user)
+        # db.session.commit()
+        print(form.due_date)
+        flash('Due Date Set')
+        return redirect(url_for('index'))
+    return render_template('due_date.html', title='Set Due Date', form=form)

@@ -35,7 +35,6 @@ class User(UserMixin, db.Model):
 To-do tasks for a user
 timestamp is indexed to efficiently retreive todos in chronologucal order
 '''
-
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
