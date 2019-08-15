@@ -30,7 +30,8 @@ def index():
         return redirect(url_for('index'))
 
     user = User.query.filter_by(id=current_user.id).first()
-    if user.list_as_descending:
+    #if user.list_as_descending:
+    if user.view_tasks_by_newest:
         tasks = current_user.tasks_descending().all()
     else:
         tasks = current_user.tasks_ascending().all()
@@ -94,38 +95,59 @@ def delete_task(task_id):
 # Descending Tasks
 @app.route('/newest')
 def newest():
-
     user = User.query.filter_by(id=current_user.id).first()
-    user.list_as_descending = True
+
+
+    user.set_sorted_view_of_tasks(view_by_newest=True, view_by_due_date=False)
+    #user.list_as_descending = True
+    #user.list_by_due_date = False
+
+
     db.session.commit()
-
     flash(f'Descending Tasks')
-    print('Descending: ', user.list_as_descending)
-
-
     return redirect(url_for('index'))
 
 # Ascending Tasks
 @app.route('/oldest')
 def oldest():
     user = User.query.filter_by(id=current_user.id).first()
-    user.list_as_descending = False
+
+
+    user.set_sorted_view_of_tasks(view_by_newest=False, view_by_due_date=False)
+    #user.list_as_descending = False
+    #user.list_by_due_date = False
 
 
     db.session.commit()
-
     flash(f'Ascending Tasks')
-    print('Descending: ', user.list_as_descending)
+    return redirect(url_for('index'))
+
+# Descending Tasks By Due Date
+@app.route('/sort_by_due_date_descending')
+def sort_by_due_date_descending():
+    user = User.query.filter_by(id=current_user.id).first()
+
+
+    user.list_by_due_date  = True
+    user.list_as_descending = False
+
+    db.session.commit()
+
+    flash(f'List By Due Date')
+    print('List By Due Date: ', user.list_by_due_date)
 
     return redirect(url_for('index'))
 
 
-@app.route('/due_date', methods=['GET', 'POST'])
-def due_date():
+@app.route('/set_due_date/<task_id>', methods=['GET', 'POST'])
+def set_due_date(task_id):
     if current_user.is_anonymous:
         return render_template('index.html', title='Home')
     form = DueDateForm()
     if form.validate_on_submit():
+        task = Task.query.filter_by(id=int(task_id)).first()
+        if task is None:
+            return redirect(url_for('index'))
 
         # html form {key : vaule} -> {'due_date' : '<user input date>'}
         # EX: <input id="due_date" name="due_date" type="text" value="01/03/2004">
@@ -148,9 +170,16 @@ def due_date():
         print(type(due_date))
 
 
-        # DD = Task(due_date=due_date) or Task.due date = due date
-        # db.session.add(DD)
-        # db.session.commit()
+        ''' This creates a new task object with no body, but a due date parameter, I need to query the current user's task, then set THAT tasks due date to this due_date variable
+        '''
+        #due = Task(due_date=due_date)
+
+        task.set_due_date(due_date)
+
+
+
+        db.session.add(task)
+        db.session.commit()
 
         flash(f'Due Date Set For {month}/{day}/{year}')
         return redirect(url_for('index'))

@@ -26,7 +26,7 @@
         <!-- Else if viewing as ascending, show dead link to Oldest and live link to Newest -->
         <b>
         Sort By:
-        {% if current_user.list_as_descending %}
+        {% if current_user.view_tasks_by_newest %}
             Newest
             <a href="{{ url_for('oldest') }}">Oldest</a>
         {% else %}
@@ -43,10 +43,11 @@
         {% for task in tasks %}
         <p>
             <a href="{{ url_for('delete_task', task_id=task.id) }}">Complete</a>
-            <br> ID: {{ task.id}}
-            <br> BODY: {{ task.body }}
-            <br> TIME: {{ task.timestamp }}
-            <br> <a href="{{ url_for('due_date') }}">Set Due Date</a>
+            <br> <b>ID:</b>         {{ task.id}}
+            <br> <b>BODY:</b>       {{ task.body }}
+            <br> <b>TIME:</b>       {{ task.timestamp }}
+            <br> <b>DUE DATE:</b>   {{ task.due_date }}
+            <br> <a href="{{ url_for('set_due_date', task_id=task.id) }}">Set Due Date</a>
         </p>
         {% endfor %}
 
