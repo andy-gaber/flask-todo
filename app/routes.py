@@ -1,3 +1,4 @@
+import datetime
 from flask import render_template, flash, redirect, url_for, request
 from app import app, db
 from app.forms import LoginForm, RegistrationForm, TaskForm, DueDateForm
@@ -125,11 +126,33 @@ def due_date():
         return render_template('index.html', title='Home')
     form = DueDateForm()
     if form.validate_on_submit():
-        # user = User(username=form.username.data, email=form.email.data)
-        # user.set_password(form.password.data)
-        # db.session.add(user)
-        # db.session.commit()
+
+        # html form {key : vaule} -> {'due_date' : '<user input date>'}
+        # EX: <input id="due_date" name="due_date" type="text" value="01/03/2004">
         print(form.due_date)
-        flash('Due Date Set')
+        date = request.form['due_date']
+        month, day, year = date.split('/')
+        print(month, day, year)
+        ''' User date input will be in the form MM/DD/YYYY, datetime.date object will not take a day or month as 01 - 09, only 1 - 9, 10, 11, 12, so when user inputs 01/05/2019 as date, check month and day for trailing 0, and set month and day to the second digit to make compatible with datetime.date '''
+        if month[0] == '0':
+            month = month[1]
+        if day[0] == '0':
+            day = day[1]
+        print(month, day, year)
+        # convert to int, then transform to datetime.date object, then commit to DB
+
+        # DATE OBJECT: YEAR, MONTH, DAY
+        # convert y,m,d to int, set as datetime.date object
+        due_date = datetime.date(year=int(year), month=int(month), day=int(day))
+        print(due_date)
+        print(type(due_date))
+
+
+        # DD = Task(due_date=due_date) or Task.due date = due date
+        # db.session.add(DD)
+        # db.session.commit()
+
+        flash(f'Due Date Set For {month}/{day}/{year}')
         return redirect(url_for('index'))
     return render_template('due_date.html', title='Set Due Date', form=form)
+

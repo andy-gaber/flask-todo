@@ -11,6 +11,7 @@ class User(UserMixin, db.Model):
     # tasks references the class Task with 'Task', User is the one to many Tasks
     tasks = db.relationship('Task', backref='author', lazy='dynamic')
     list_as_descending = db.Column(db.Boolean)
+    list_by_due_date = db.Column(db.Boolean)
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -31,6 +32,10 @@ class User(UserMixin, db.Model):
         user_tasks = Task.query.filter_by(user_id=self.id)
         return user_tasks.order_by(Task.timestamp)
 
+    def order_by_due_date(self):
+        user_tasks = Task.query.filter_by(user_id=self.id)
+        return user_tasks.order_by(Task.due_date.desc())
+
 '''
 To-do tasks for a user
 timestamp is indexed to efficiently retreive todos in chronologucal order
@@ -42,6 +47,7 @@ class Task(db.Model):
     # user.id: 'user' is the table name (SQLAlchemy automatically uses lowercase
     # and snake case for model names)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    due_date = db.Column(db.Date, index=True)
 
     def __repr__(self):
         return f'<Task {self.body}>'

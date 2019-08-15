@@ -36,5 +36,6 @@ class TaskForm(FlaskForm):
     submit = SubmitField('Submit')
 
 class DueDateForm(FlaskForm):
+    # DateField verifies by datetime.date
     due_date = DateField('Enter Due Date: MM/DD/YYYY', format='%m/%d/%Y')
     submit = SubmitField('Submit')
