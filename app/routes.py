@@ -30,12 +30,7 @@ def index():
         return redirect(url_for('index'))
 
     user = User.query.filter_by(id=current_user.id).first()
-    #if user.list_as_descending:
-    if user.view_tasks_by_newest:
-        tasks = current_user.tasks_descending().all()
-    else:
-        tasks = current_user.tasks_ascending().all()
-
+    tasks = user.get_sorted_view_of_tasks()
     return render_template('index.html', title='Home', form=form, tasks=tasks)
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -98,7 +93,7 @@ def newest():
     user = User.query.filter_by(id=current_user.id).first()
 
 
-    user.set_sorted_view_of_tasks(view_by_newest=True, view_by_due_date=False)
+    user.set_sorted_view_of_tasks(view_by_newest=True, view_by_oldest=False, view_by_due_date=False)
     #user.list_as_descending = True
     #user.list_by_due_date = False
 
@@ -113,7 +108,7 @@ def oldest():
     user = User.query.filter_by(id=current_user.id).first()
 
 
-    user.set_sorted_view_of_tasks(view_by_newest=False, view_by_due_date=False)
+    user.set_sorted_view_of_tasks(view_by_newest=False, view_by_oldest=True, view_by_due_date=False)
     #user.list_as_descending = False
     #user.list_by_due_date = False
 
@@ -123,18 +118,18 @@ def oldest():
     return redirect(url_for('index'))
 
 # Descending Tasks By Due Date
-@app.route('/sort_by_due_date_descending')
-def sort_by_due_date_descending():
+@app.route('/view_by_due_date')
+def view_by_due_date():
     user = User.query.filter_by(id=current_user.id).first()
+    user.set_sorted_view_of_tasks(view_by_newest=False, view_by_oldest=False, view_by_due_date=True)
 
 
-    user.list_by_due_date  = True
-    user.list_as_descending = False
+    #user.list_by_due_date  = True
+    #user.list_as_descending = False
 
     db.session.commit()
 
     flash(f'List By Due Date')
-    print('List By Due Date: ', user.list_by_due_date)
 
     return redirect(url_for('index'))
 
@@ -151,36 +146,21 @@ def set_due_date(task_id):
 
         # html form {key : vaule} -> {'due_date' : '<user input date>'}
         # EX: <input id="due_date" name="due_date" type="text" value="01/03/2004">
-        print(form.due_date)
         date = request.form['due_date']
-        month, day, year = date.split('/')
-        print(month, day, year)
-        ''' User date input will be in the form MM/DD/YYYY, datetime.date object will not take a day or month as 01 - 09, only 1 - 9, 10, 11, 12, so when user inputs 01/05/2019 as date, check month and day for trailing 0, and set month and day to the second digit to make compatible with datetime.date '''
-        if month[0] == '0':
-            month = month[1]
-        if day[0] == '0':
-            day = day[1]
-        print(month, day, year)
-        # convert to int, then transform to datetime.date object, then commit to DB
+        print(form.due_date)
+        print(date)
 
-        # DATE OBJECT: YEAR, MONTH, DAY
-        # convert y,m,d to int, set as datetime.date object
+        ''' User selects due date via popup calendar that displays MM/DD/YYYY, but entry date sent in POST is 'YYYY-MM-DD'. Grab the date by flask request, separate the year, month, date, set these parameters in a datetime.date object, and set this datetime.date as the task due date in Task model  '''
+        year, month, day = date.split('-')
+        print(year, month, day)
+
         due_date = datetime.date(year=int(year), month=int(month), day=int(day))
         print(due_date)
         print(type(due_date))
 
-
-        ''' This creates a new task object with no body, but a due date parameter, I need to query the current user's task, then set THAT tasks due date to this due_date variable
-        '''
-        #due = Task(due_date=due_date)
-
         task.set_due_date(due_date)
-
-
-
         db.session.add(task)
         db.session.commit()
-
         flash(f'Due Date Set For {month}/{day}/{year}')
         return redirect(url_for('index'))
     return render_template('due_date.html', title='Set Due Date', form=form)

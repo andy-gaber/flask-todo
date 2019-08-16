@@ -29,9 +29,18 @@
         {% if current_user.view_tasks_by_newest %}
             Newest
             <a href="{{ url_for('oldest') }}">Oldest</a>
-        {% else %}
+            <a href="{{ url_for('view_by_due_date') }}">Due Date</a>
+        {% elif current_user.view_tasks_by_oldest %}
+
             <a href="{{ url_for('newest') }}">Newest</a>
             Oldest
+            <a href="{{ url_for('view_by_due_date') }}">Due Date</a>
+
+
+        {% elif current_user.view_tasks_by_due_date %}
+            <a href="{{ url_for('newest') }}">Newest</a>
+            <a href="{{ url_for('oldest') }}">Oldest</a>
+            Due Date
         {% endif %}
         </b>
 
