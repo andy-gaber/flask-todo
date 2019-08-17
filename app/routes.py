@@ -10,7 +10,6 @@ url_for('login') returns /login, and url_for('index') return '/index. The argume
 '''
 current_user is function of flask_login libray, which interfaces with database, so when current_user is called the return is the current User class user that is logged in. Similar to calling td = User.tasks_descending()
 '''
-
 @app.route('/', methods=['GET', 'POST'])
 @app.route('/index', methods=['GET', 'POST'])
 def index():
@@ -74,7 +73,6 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html', title='Register', form=form)
 
-
 @app.route('/delete_task/<task_id>')
 def delete_task(task_id):
     task = Task.query.filter_by(id=int(task_id)).first()
@@ -85,20 +83,14 @@ def delete_task(task_id):
     flash(f'Task: {task_id} Deleted')
     return redirect(url_for('index'))
 
-
-
 # Descending Tasks
 @app.route('/newest')
 def newest():
     user = User.query.filter_by(id=current_user.id).first()
-
-
     user.set_sorted_view_of_tasks(view_by_newest=True, view_by_oldest=False, view_by_due_date=False)
-    #user.list_as_descending = True
-    #user.list_by_due_date = False
-
 
     db.session.commit()
+
     flash(f'Descending Tasks')
     return redirect(url_for('index'))
 
@@ -106,14 +98,10 @@ def newest():
 @app.route('/oldest')
 def oldest():
     user = User.query.filter_by(id=current_user.id).first()
-
-
     user.set_sorted_view_of_tasks(view_by_newest=False, view_by_oldest=True, view_by_due_date=False)
-    #user.list_as_descending = False
-    #user.list_by_due_date = False
-
 
     db.session.commit()
+
     flash(f'Ascending Tasks')
     return redirect(url_for('index'))
 
@@ -123,16 +111,10 @@ def view_by_due_date():
     user = User.query.filter_by(id=current_user.id).first()
     user.set_sorted_view_of_tasks(view_by_newest=False, view_by_oldest=False, view_by_due_date=True)
 
-
-    #user.list_by_due_date  = True
-    #user.list_as_descending = False
-
     db.session.commit()
 
     flash(f'List By Due Date')
-
     return redirect(url_for('index'))
-
 
 @app.route('/set_due_date/<task_id>', methods=['GET', 'POST'])
 def set_due_date(task_id):
@@ -143,13 +125,11 @@ def set_due_date(task_id):
         task = Task.query.filter_by(id=int(task_id)).first()
         if task is None:
             return redirect(url_for('index'))
-
         # html form {key : vaule} -> {'due_date' : '<user input date>'}
         # EX: <input id="due_date" name="due_date" type="text" value="01/03/2004">
         date = request.form['due_date']
         print(form.due_date)
         print(date)
-
         ''' User selects due date via popup calendar that displays MM/DD/YYYY, but entry date sent in POST is 'YYYY-MM-DD'. Grab the date by flask request, separate the year, month, date, set these parameters in a datetime.date object, and set this datetime.date as the task due date in Task model  '''
         year, month, day = date.split('-')
         print(year, month, day)
@@ -165,3 +145,18 @@ def set_due_date(task_id):
         return redirect(url_for('index'))
     return render_template('due_date.html', title='Set Due Date', form=form)
 
+@app.route('/remove_due_date/<task_id>')
+def remove_due_date(task_id):
+
+    task = Task.query.filter_by(id=int(task_id)).first()
+    if task is None:
+        return redirect(url_for('index'))
+
+    due_date = None
+    task.set_due_date(due_date)
+    db.session.add(task)
+
+    db.session.commit()
+
+    flash(f'Due Date Removed')
+    return redirect(url_for('index'))

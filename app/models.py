@@ -32,7 +32,17 @@ class User(UserMixin, db.Model):
         elif self.view_tasks_by_oldest:
             return user_tasks.order_by(Task.timestamp).all()
         elif self.view_tasks_by_due_date:
-            return user_tasks.order_by(Task.due_date.desc()).all()
+            print(user_tasks.order_by(Task.due_date))
+            print(type(user_tasks.order_by(Task.due_date)))         # query object
+
+            print(user_tasks.order_by(Task.due_date).all())
+            print(type(user_tasks.order_by(Task.due_date).all()))   # list of task objects
+
+
+            return user_tasks.order_by(Task.due_date).all()
+            #result = user_tasks.order_by(Task.due_date).all()
+            #result = sorted(result, key=lambda x: x.due_date)
+            #return result
 
     def set_sorted_view_of_tasks(self, view_by_newest, view_by_oldest, view_by_due_date):
         if view_by_newest:
