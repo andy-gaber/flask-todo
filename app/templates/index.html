@@ -1,52 +1,40 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block content %}
+{% block app_content %}
         <!-- if/else current user show username, else show just Hello -->
         {% if current_user.is_anonymous %}
-        <h1>Hello, Welcome To To-Do List!</h1>
+        <h2>Welcome To The To-Do List</h2>
 
         <!-- implement links on 'register' and 'log in' -->
-        <h3>To get started, you can (create an account) or (log in)</h3>
+        <h4>
+            To get started you can <a href="{{ url_for('register') }}">create an account</a> or <a href="{{ url_for('login') }}">log in</a>.
+        </h4>
+
         {% else %}
-
-        <form action="" method="post">
-            {{ form.hidden_tag() }}
-            <p>
-                {{ form.task.label }}<br>
-                {{ form.task(cols=32, rows=4) }}<br>
-                {% for error in form.task.errors %}
-                <span style="color: red;">[{{ error }}]</span>
-                {% endfor %}
-            </p>
-            <p>{{ form.submit() }}</p>
-        </form>
-
-
-        <!-- If viewing as descending, show dead link to Newest and live link to Oldest -->
-        <!-- Else if viewing as ascending, show dead link to Oldest and live link to Newest -->
+        <div class="row">
+            <div class="col-md-4">
+                {{ wtf.quick_form(form) }}
+            </div>
+        </div>
+        <hr>
+        <!--    If viewing as descending, show dead link to Newest and Due Date, live link to Oldest. Else if viewing as ascending, show dead link to Oldest and Due Date, live link to Newest. Else if viewing by due date, show dead link to Oldest and Newest, live link to Due Date -->
         <b>
         Sort By:
         {% if current_user.view_tasks_by_newest %}
-            Newest
-            <a href="{{ url_for('oldest') }}">Oldest</a>
+            Newest |
+            <a href="{{ url_for('oldest') }}">Oldest</a> |
             <a href="{{ url_for('view_by_due_date') }}">Due Date</a>
         {% elif current_user.view_tasks_by_oldest %}
-
-            <a href="{{ url_for('newest') }}">Newest</a>
-            Oldest
-            <a href="{{ url_for('view_by_due_date') }}">Due Date</a>
-
-
+            <a href="{{ url_for('newest') }}">Newest</a> |
+            Oldest |
+            <a href="{{ url_for('view_by_due_date') }}"> Due Date</a>
         {% elif current_user.view_tasks_by_due_date %}
-            <a href="{{ url_for('newest') }}">Newest</a>
-            <a href="{{ url_for('oldest') }}">Oldest</a>
+            <a href="{{ url_for('newest') }}">Newest</a> |
+            <a href="{{ url_for('oldest') }}">Oldest</a> |
             Due Date
         {% endif %}
         </b>
-
-
-
-
         <hr>
 
         {% for task in tasks %}
@@ -64,8 +52,9 @@
 
             <br> <a href="{{ url_for('delete_task', task_id=task.id) }}">Mark As Complete</a>
         </p>
+        <hr>
         {% endfor %}
 
         {% endif %}
 
-{% endblock content %}
+{% endblock app_content %}

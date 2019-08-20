@@ -32,17 +32,20 @@ class User(UserMixin, db.Model):
         elif self.view_tasks_by_oldest:
             return user_tasks.order_by(Task.timestamp).all()
         elif self.view_tasks_by_due_date:
-            print(user_tasks.order_by(Task.due_date))
-            print(type(user_tasks.order_by(Task.due_date)))         # query object
+            ''' Here the user selected to view tasks by due date, which will display tasks in the order they are due, starting with the earliest due date. When a Task is instantiated the due_date field is set to None by default, and None is less than any datetime.date, so when the tasks are sorted by the database the tasks with due dates equal to None are displayed before the tasks with actual due dates. To correct this, when the list of tasks is queried a custom sorting algorithm is used to shuffle all the tasks with due dates to the front of the list and push all the tasks with None due dates to the end of the list. In-place, linear sort. '''
 
-            print(user_tasks.order_by(Task.due_date).all())
-            print(type(user_tasks.order_by(Task.due_date).all()))   # list of task objects
-
-
-            return user_tasks.order_by(Task.due_date).all()
-            #result = user_tasks.order_by(Task.due_date).all()
-            #result = sorted(result, key=lambda x: x.due_date)
-            #return result
+            tasks = user_tasks.order_by(Task.due_date).all() # here tasks is unsorted list
+            left = 0
+            right = 0
+            ''' start with left and right variables at first index of list, traverse with right as leader and left as follower until right reaches a task with a due date, then swap left with right and continue until right reaches the end of the list '''
+            while right < len(tasks):
+                if tasks[right].due_date == None:
+                    right += 1
+                else:
+                    tasks[left], tasks[right] = tasks[right], tasks[left]
+                    left += 1
+                    right += 1
+            return tasks
 
     def set_sorted_view_of_tasks(self, view_by_newest, view_by_oldest, view_by_due_date):
         if view_by_newest:

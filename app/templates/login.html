@@ -1,29 +1,13 @@
-<!--
-As a general rule, any fields that have validators attached will have error messages added under form.<field_name>.errors. This is going to be a list, because fields can have multiple validators attached and more than one may be providing error messages to display to the user.
--->
+{% extends 'base.html' %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
-{% extends "base.html" %}
-
-{% block content %}
+{% block app_content %}
     <h1>Sign In</h1>
-    <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
-        <p>
-            {{ form.username.label }}<br>
-            {{ form.username(size=32) }}
-            {% for error in form.username.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>
-            {{ form.password.label }}<br>
-            {{ form.password(size=32) }}
-            {% for error in form.password.errors %}
-            <span style="color: red;">[{{ error }}]</span>
-            {% endfor %}
-        </p>
-        <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
-        <p>{{ form.submit() }}</p>
-    </form>
+    <div class="row">
+        <div class="col-md-4">
+            {{ wtf.quick_form(form) }}
+        </div>
+    </div>
+    <br>
     <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>
-{% endblock content %}
+{% endblock app_content %}

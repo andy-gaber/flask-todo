@@ -30,6 +30,7 @@ def index():
 
     user = User.query.filter_by(id=current_user.id).first()
     tasks = user.get_sorted_view_of_tasks()
+
     return render_template('index.html', title='Home', form=form, tasks=tasks)
 
 @app.route('/login', methods=['GET', 'POST'])
