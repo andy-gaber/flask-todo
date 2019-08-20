@@ -1,14 +1,23 @@
 {% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block app_content %}
+{% block content %}
 
     <div class="row">
         <div class="col-md-4">
-            {{ wtf.quick_form(form) }}
+            <form action="" method="post">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.due_date.label }}<br>
+                    {{ form.due_date(cols=20, rows=1) }}<br>
+                    {% for error in form.due_date.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
         </div>
     </div>
 
     <a href="{{ url_for('index') }}">Back To To-Do List</a>
 
-{% endblock app_content %}
+{% endblock content %}

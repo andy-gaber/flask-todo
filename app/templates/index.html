@@ -1,7 +1,7 @@
 {% extends "base.html" %}
-{% import 'bootstrap/wtf.html' as wtf %}
 
-{% block app_content %}
+
+{% block content %}
         <!-- if/else current user show username, else show just Hello -->
         {% if current_user.is_anonymous %}
         <h2>Welcome To The To-Do List</h2>
@@ -14,7 +14,17 @@
         {% else %}
         <div class="row">
             <div class="col-md-4">
-                {{ wtf.quick_form(form) }}
+                <form action="" method="post">
+                    {{ form.hidden_tag() }}
+                    <p>
+                        {{ form.task.label }}<br>
+                        {{ form.task(cols=64, rows=2) }}<br>
+                        {% for error in form.task.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                    </p>
+                    <p>{{ form.submit() }}</p>
+                </form>
             </div>
         </div>
         <hr>
@@ -57,4 +67,4 @@
 
         {% endif %}
 
-{% endblock app_content %}
+{% endblock content %}
