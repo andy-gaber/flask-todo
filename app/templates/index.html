@@ -8,16 +8,122 @@
     <h4>
         To get started you can <a href="{{ url_for('register') }}">create an account</a> or <a href="{{ url_for('login') }}">log in</a>.
     </h4>
+    <br>
+    <br>
+<!-- ANONYMOUS USER PAGE DEMO START -->
+<!-- anchor tag hyperlinks placeholder href="#!" refers to nothing so clicking has no effect (no scrolling to top as in href="#" -->
+    <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;" />
+     <b>
+        Sort By:
+        <a href="#!">Newest</a> |
+        <a href="#!">Oldest</a> |
+        <a href="#!">Due Date</a>
+    </b>
+    <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;" />
 
+    <div class = "panel panel-default" style="background-color:#e3f2fd;">
+        <div class="row">
+            <div class="col-md-8"><b>To Do</b></div>
+            <div class="col-md-2"><b>Due</b></div>
+            <div class="col-md-2"><b>Complete</b></div>
+        </div>
+    </div>
+        <br>
+    <div class="row">
+        <div class="col-md-8">
+            <p>
+                Crreate an account for to-do list<br>
+                <a href="#!">Remove Due Date</a>
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+                08-25-2019
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+            <a href="#!">[&#10003;]</a>
+            </p>
+        </div>
+        <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;"/>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <p>
+                Add tasks to list<br>
+                <a href="#!">Remove Due Date</a>
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+                08-31-2019
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+            <a href="#!">[&#10003;]</a>
+            </p>
+        </div>
+        <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;"/>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <p>
+                <br>
+                <a href="#!">Remove Due Date</a>
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+                09-07-2019
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+            <a href="#!">[&#10003;]</a>
+            </p>
+        </div>
+        <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;"/>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <p>
+                TASK 4<br><br>
 
-
-
-
-
-
-
-
-
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+                <a href="#!">[+]</a>
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+            <a href="#!">[&#10003;]</a>
+            </p>
+        </div>
+        <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;"/>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <p>
+                TASK 5<br><br>
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+                <a href="#!">[+]</a>
+            </p>
+        </div>
+        <div class="col-md-2">
+            <p>
+            <a href="#!">[&#10003;]</a>
+            </p>
+        </div>
+        <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;"/>
+    </div>
+<!-- ANONYMOUS USER PAGE DEMO END -->
 
     {% else %} <!-- Task Form -->
     <div class="row">
@@ -92,7 +198,7 @@
             <a href="{{ url_for('delete_task', task_id=task.id) }}">[&#10003;]</a>
             </p>
         </div>
-        <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;" />
+        <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;"/>
 
     </div>
 
