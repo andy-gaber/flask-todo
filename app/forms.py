@@ -44,5 +44,5 @@ class DueDateForm(FlaskForm):
     user enters 'MM/DD/YYYY' on form, but entry date sent is 'YYYY-MM-DD', so DateField format needs to be set to '%Y-%m-%d' for successful POST
     '''
 
-    due_date = DateField('Enter Due Date: MM/DD/YYYY', format='%Y-%m-%d')
+    due_date = DateField('Enter Due Date:', format='%Y-%m-%d')
     submit = SubmitField('Submit')

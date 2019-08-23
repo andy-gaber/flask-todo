@@ -83,8 +83,7 @@ class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     body = db.Column(db.String(140))
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    # user.id: 'user' is the table name (SQLAlchemy automatically uses lowercase
-    # and snake case for model names)
+    # user.id: 'user' is the table name (SQLAlchemy automatically uses lowercase and snake case for model names)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     due_date = db.Column(db.Date, index=True)
 
