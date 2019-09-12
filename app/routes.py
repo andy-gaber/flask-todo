@@ -33,6 +33,9 @@ def index():
 
     return render_template('index.html', title='Home', form=form, tasks=tasks)
 
+
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     # user already logged in, but navigates to /login URL, if this
@@ -41,19 +44,37 @@ def login():
         return redirect(url_for('index'))
     form = LoginForm()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        ''' user can log in by their username or email address. The 'username' and 'email' variables are database User objects which are set by a database search of a User by their username or email, whichever the user inputs to log in '''
+        username = User.query.filter_by(username=form.username.data).first()
+        email = User.query.filter_by(email=form.username.data).first()
+
         ''' Check username and password, if one or both are invalid flash error message and redirect to /login. Do not inform user that it is their username or password or both that are invalid, only that the login credentials are invalid - security issue '''
-        if user is None or not user.check_password(form.password.data):
+        if username:
+            if not username.check_password(form.password.data):
+                flash('Invalid username or password')
+                return redirect(url_for('login'))
+        elif email:
+            if not email.check_password(form.password.data):
+                flash('Invalid username or password')
+                return redirect(url_for('login'))
+        else:
             flash('Invalid username or password')
             return redirect(url_for('login'))
+
         ''' By default, when the user closes their browser the Flask Session is deleted and the user is logged out. “Remember Me” prevents the user from accidentally being logged out when they close their browser. '''
-        login_user(user, remember=form.remember_me.data)
+        if username:
+            login_user(username, remember=form.remember_me.data)
+        elif email:
+            login_user(email, remember=form.remember_me.data)
         # if user is authenticated and logged in, redirect to /index
         return redirect(url_for('index'))
 
     # error with form, not valid for some reason, display /login page
     # to try again (note: return render_template, not redirect
     return render_template('login.html', title='Sign In', form=form)
+
+
+
 
 @app.route('/logout')
 def logout():
