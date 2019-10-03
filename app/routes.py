@@ -102,7 +102,7 @@ def delete_task(task_id):
         return redirect(url_for('index'))
     db.session.delete(task)
     db.session.commit()
-    flash(f'Task: {task_id} Deleted')
+    flash(f'Task Deleted')
     return redirect(url_for('index'))
 
 # Descending Tasks
@@ -113,7 +113,6 @@ def newest():
 
     db.session.commit()
 
-    flash(f'Descending Tasks')
     return redirect(url_for('index'))
 
 # Ascending Tasks
@@ -124,7 +123,6 @@ def oldest():
 
     db.session.commit()
 
-    flash(f'Ascending Tasks')
     return redirect(url_for('index'))
 
 # Descending Tasks By Due Date
@@ -135,7 +133,6 @@ def view_by_due_date():
 
     db.session.commit()
 
-    flash(f'List By Due Date')
     return redirect(url_for('index'))
 
 @app.route('/set_due_date/<task_id>', methods=['GET', 'POST'])

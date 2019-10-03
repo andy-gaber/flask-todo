@@ -50,12 +50,6 @@ Sort By:
     <div class="col-md-8">
         <p>
             {{ task.body }}<br>
-            {{ task.timestamp }}<br>
-            ID: {{ task.id}}<br>
-            {% if task.due_date %}
-
-            <a href="{{ url_for('remove_due_date', task_id=task.id) }}">Remove Due Date</a>
-            {% endif %}
         </p>
     </div>
     <div class="col-md-2">
@@ -63,6 +57,7 @@ Sort By:
         {% if task.due_date %}
 
         {{ task.due_date.strftime('%m-%d-%Y') }}
+        <a href="{{ url_for('remove_due_date', task_id=task.id) }}">[Remove]</a>
         {% else %}
         <a href="{{ url_for('set_due_date', task_id=task.id) }}">[+]</a>
         {% endif %}
