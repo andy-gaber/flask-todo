@@ -1,6 +1,6 @@
-<!-- Index page for an anonymous user, shows welcome message, links to register or log in, and a demo to-do list -->
+<!-- Index page for an anonymous user, contains welcome message, links to register or log in, and a demo to-do list -->
 
-<h2>Welcome To The To-Do List</h2>
+<h2>Welcome To Your To-Do List</h2>
 <h4>
     To get started you can <a href="{{ url_for('register') }}">create an account</a> or <a href="{{ url_for('login') }}">log in</a>.
 </h4>
@@ -8,6 +8,7 @@
 <br>
 <div class="alert alert-info" role="alert">
     <div class="row">
+        <!-- &#9432; is unicode information icon -->
         <div class="col-md-1" style="font-size:40px"><b>&#9432;</b></div>
         <div class="col-md-11"><b>Below is a preview of the app. If you would like to try out the to-do list without creating an account please log in with username "guest" and password "guest".</b></div>
     </div>
@@ -15,9 +16,11 @@
 <br>
 
 <!-- ANONYMOUS USER PAGE DEMO -->
-<!-- anchor tag hyperlinks placeholder href="#!" refers to nothing so clicking has no effect (no scrolling to top as in href="#" -->
+<!-- All anchor tag hyperlinks have the placeholder of href="#!". A blank href, when clicked, will refresh the page because it is a hyperlink the the current page. To prevent a page refresh the placeholder of href="#" is usually used but, when clicked, will induce automatic scrolling to the top of the page. To achieve hyperlinks that do not have any effect on the page and do not case a page refresh the placeholder href="#!" is used, because there are no elements on this page with an id="!" so the hyperlinks refer to nothing and clicking has no effect on the page. The links are for demonstration purposes only. -->
 <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;" />
- <b>
+
+<!-- Sort links -->
+<b>
     Sort By:
     <a href="#!">Newest</a> |
     <a href="#!">Oldest</a> |
@@ -33,6 +36,8 @@
     </div>
 </div>
     <br>
+
+<!-- Demo to-do tasks -->
 <div class="row">
     <div class="col-md-8">
         <p>

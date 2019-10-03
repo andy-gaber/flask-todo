@@ -2,10 +2,13 @@
 
 {% block content %}
     <h1>Register</h1>
+
+    <!-- Registration Form -->
     <div class="row">
         <div class="col-md-4">
              <form action="" method="post">
                 {{ form.hidden_tag() }}
+                <!-- Create username -->
                 <p>
                     {{ form.username.label }}<br>
                     {{ form.username(size=32) }}<br>
@@ -13,6 +16,7 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
+                <!-- Enter email address -->
                 <p>
                     {{ form.email.label }}<br>
                     {{ form.email(size=64) }}<br>
@@ -20,6 +24,7 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
+                <!-- Create password -->
                 <p>
                     {{ form.password.label }}<br>
                     {{ form.password(size=32) }}<br>
@@ -27,6 +32,7 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
+                <!-- Confirm password -->
                 <p>
                     {{ form.confirm.label }}<br>
                     {{ form.confirm(size=32) }}<br>
@@ -34,6 +40,7 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
+                <!-- Submit button -->
                 <p>{{ form.submit() }}</p>
             </form>
         </div>

@@ -1,14 +1,13 @@
 {% extends "base.html" %}
 
-
 {% block content %}
 
-    <!-- If anonymouse user render anonymous index page -->
+    <!-- If anonymouse user, render anonymous index page -->
     {% if current_user.is_anonymous %}
 
     {% include '_anonymous_user.html' %}
 
-    <!-- Else if authenticated user render current user's personalized index page -->
+    <!-- If authenticated user, render current user's personalized index page -->
     {% else %}
 
     {% include '_authenticated_user.html' %}

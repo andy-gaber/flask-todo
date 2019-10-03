@@ -1,4 +1,4 @@
-<!-- Index page for an authenticated user, shows "Add Task" form, Sort By links, and the current user's personalized to-do list -->
+<!-- Index page for an authenticated user, contains "Add Task" form, Sort By links, and the current user's personalized to-do list -->
 
 <!-- Task Form -->
 <div class="row">
@@ -17,7 +17,7 @@
     </div>
 </div>
 <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;"/>
-<!--    If viewing as descending, show dead link to Newest and Due Date, live link to Oldest. Else if viewing as ascending, show dead link to Oldest and Due Date, live link to Newest. Else if viewing by due date, show dead link to Oldest and Newest, live link to Due Date -->
+<!-- If viewing tasks as Oldest, show dead links to Newest and Due Date, with a live link to Oldest. If viewing as Newest, show dead links to Oldest and Due Date, with a live link to Newest. If viewing by Due Date, show dead links to Oldest and Newest, with a live link to Due Date -->
 <b>
 Sort By:
 {% if current_user.view_tasks_by_newest %}
@@ -44,7 +44,8 @@ Sort By:
         <div class="col-md-2"><b>Complete</b></div>
     </div>
 </div>
-    <br>
+<br>
+<!-- List users tasks -->
 {% for task in tasks %}
 <div class="row">
     <div class="col-md-8">
@@ -54,10 +55,11 @@ Sort By:
     </div>
     <div class="col-md-2">
         <p>
+        <!-- If task has a due date, display date and hyperlink to remove due date -->
         {% if task.due_date %}
-
         {{ task.due_date.strftime('%m-%d-%Y') }}
         <a href="{{ url_for('remove_due_date', task_id=task.id) }}">[Remove]</a>
+        <!-- If task does not have a due date, display hyperlink to add due date -->
         {% else %}
         <a href="{{ url_for('set_due_date', task_id=task.id) }}">[+]</a>
         {% endif %}
@@ -65,10 +67,10 @@ Sort By:
     </div>
     <div class="col-md-2">
         <p>
+        <!-- For each task, display a hyperlink to remove the task from the to-do list -->
         <a href="{{ url_for('delete_task', task_id=task.id) }}">[&#10003;]</a>
         </p>
     </div>
     <hr style="width: 100%; color: black; height: 1px; background-color:&9B9999;"/>
-
 </div>
 {% endfor %}

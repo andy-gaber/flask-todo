@@ -3,10 +3,12 @@
 {% block content %}
     <h1>Sign In</h1>
 
+    <!-- Login Form -->
     <div class="row">
         <div class="col-md-4">
             <form action="" method="post" novalidate>
                 {{ form.hidden_tag() }}
+                <!-- Enter username -->
                 <p>
                     {{ form.username.label }}<br>
                     {{ form.username(size=32) }}
@@ -14,6 +16,7 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
+                <!-- Enter password -->
                 <p>
                     {{ form.password.label }}<br>
                     {{ form.password(size=32) }}
@@ -21,14 +24,13 @@
                     <span style="color: red;">[{{ error }}]</span>
                     {% endfor %}
                 </p>
+                <!-- Remember Me click box -->
                 <p>{{ form.remember_me() }} {{ form.remember_me.label }}</p>
+                <!-- Submit button -->
                 <p>{{ form.submit() }}</p>
             </form>
         </div>
     </div>
-
-
-
 
     <br>
     <p>New User? <a href="{{ url_for('register') }}">Click to Register!</a></p>

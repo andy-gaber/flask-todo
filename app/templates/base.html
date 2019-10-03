@@ -1,3 +1,5 @@
+<!-- Base HTML which all other HTML templates inherit from. This inherits from Bootstrap. -->
+
 <html>
     <head>
         <!-- Required meta tags -->
@@ -7,6 +9,7 @@
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
+        <!-- If title variable is passed, display it, otherwise display default 'Welcome!' title -->
         {% if title %}
         <title>{{ title }} : To-Do List</title>
         {% else %}
@@ -21,6 +24,7 @@
                 <div class="container">
                     <!-- Navigation Bar Left-->
                     <div class="navbar-header">
+                        <!-- Personalize header for registered users by displaying their username, otherwise display a default header -->
                         {% if current_user.is_anonymous %}
                             <div class="navbar-brand">To-Do List</div>
                         {% else %}
@@ -29,6 +33,7 @@
                     </div>
                     <!-- Navigation Bar Right-->
                     <div class="nav navbar-nav navbar-right">
+                    <!-- If user is logged in, display 'Logout' link in navigation bar. If user is not logged in, display 'Login' link in navigation bar -->
                     {% if current_user.is_anonymous %}
                         <a class="nav-item nav-link" href="{{ url_for('login') }}">Login</a>
                     {% else %}
@@ -40,6 +45,7 @@
             <br>
         </div>
 
+        <!-- Display error messages -->
         <div class="container">
             {% with messages = get_flashed_messages() %}
             {% if messages %}
@@ -53,8 +59,6 @@
             {% block content %}
             {% endblock content %}
         </div>
-
-
 
         <!-- Optional JavaScript -->
         <!-- jQuery first, then Popper.js, then Bootstrap JS -->
