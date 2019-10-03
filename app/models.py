@@ -3,7 +3,10 @@ from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 
-''' User model includes primary key id, username, email, hashed password, task relationship variable to reference a user's tasks, and three boolean variables to indicate the display of a user's tasks. '''
+''' User model includes primary key id, username, email, hashed password, task relationship variable to reference a user's tasks, and three boolean variables to indicate the display of a user's tasks.
+
+To work with Flask-Login (a user session management extension for Flask) the User class needs to implement a few properties and methods: is_authenticated, is_active, is_anonymous, and get_id(). Flask-Login provides the UserMixin class which provides default implementations of these. The User class will inherit from UserMixin.
+'''
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
